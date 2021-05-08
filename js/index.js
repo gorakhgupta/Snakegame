@@ -5,7 +5,7 @@ const moveSound=new Audio('bgm.mp3');
 const gameOverSound=new Audio('die.ogg');
 let speed =5;
 let score=0;
-let mx=0;
+// let mx=0;
 let lastPaintTime =0;
 let snakeArr = [
     {x:13,y:15}
@@ -64,10 +64,19 @@ function gameEngine(){
     {   let a=2;
         let b=16;
         score +=1;
-        if(score>mx)
-        mx=score;
+        if(score > hiscoreval)
+        {
+         hiscoreval =score;
+         localStorage.setItem("hiscore",JSON.stringify(hiscoreval));
+         hiscoreBox.innerHTML = "High-Score: "+hiscoreval;
+        
+        }
+      
+        // if(score>mx)
+        // mx=score;
         scoreBox.innerHTML = "Score :" +score;
-        maxBox.innerHTML = "Max-Score :" +mx;
+        // maxBox.innerHTML = "Max-Score :" +mx;
+        
         foodSound.play();
         snakeArr.unshift({x:snakeArr[0].x + inputDir.x , y:snakeArr[0].y + inputDir.y});
         food ={x: Math.round(a +(b-a)*Math.random()),y:Math.round(a+ (b-a)*Math.random())};
@@ -113,6 +122,18 @@ foodElement.classList.add('food');
 
 
 //Main logic starts here
+let hiscore = localStorage.getItem("hiscore");
+if(hiscore === null)
+{
+    hiscoreval=0;
+    localStorage.setItem("hiscore",JSON.stringify(hiscoreval));
+    // hiscoreBox.innerHTML = "High-Score: "+hiscore;
+}
+else
+{
+    hiscoreval=JSON.parse(hiscore);
+    hiscoreBox.innerHTML = "High-Score: "+hiscore;
+}
 window.requestAnimationFrame(main);
 window.addEventListener('keydown',(e)=>{
     inputDir = {x:0,y:1}//start game
